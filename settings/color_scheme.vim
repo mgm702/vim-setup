@@ -10,8 +10,8 @@ if has("unix")
     endif
   elseif s:name =~#"darwin*"
     set background=light
-    if !empty(glob("~/.vim/colors/mac_classic.vim"))
-      color mac_classic
+    if !empty(glob("~/.vim/colors/macvim-light.vim"))
+      color macvim-light
     endif
   endif
 endif
