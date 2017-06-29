@@ -1,0 +1,3 @@
+Plug 'bling/vim-airline'
+Plug 'powerline/powerline'
+Plug 'ryanoasis/vim-webdevicons'

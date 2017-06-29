@@ -1,0 +1,11 @@
+Plug 'mgm702/vim-tabtastic', {'on': 'Tabtastic'}
+Plug 'rizzatti/dash.vim', {'on': 'Dash'}
+Plug 'scrooloose/nerdcommenter'
+Plug 'luochen1990/rainbow'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'vim-scripts/L9'
+Plug 'vim-scripts/FuzzyFinder', {'on': 'FufFile'}
+Plug 'vim-scripts/YankRing.vim'
+Plug 'tpope/vim-obsession', {'on': 'Obsess'}
+Plug 'benmills/vimux', {'on': ['PromptVimTmuxCommand', 'RunLastVimTmuxCommand', 'VimuxRunCommand']}
+Plug 'mhinz/vim-grepper'

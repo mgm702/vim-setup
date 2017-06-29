@@ -1,0 +1,6 @@
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'mattn/webapi-vim', {'on': 'Gist'}
+Plug 'mattn/gist-vim', {'on': 'Gist'}
+Plug 'gregsexton/gitv', {'on': 'Gitv'}
+"Plug 'tpope/vim-git'

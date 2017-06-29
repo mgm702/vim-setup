@@ -1,0 +1,10 @@
+Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
+Plug 'tpope/vim-rails', {'for': ['ruby', 'haml']}
+Plug 'tpope/vim-endwise', {'for': 'ruby'}
+Plug 'tpope/vim-bundler', {'for': 'ruby'}
+Plug 'tpope/vim-rake', {'for': 'ruby'}
+Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
+Plug 'ck3g/vim-change-hash-syntax', {'for': 'ruby'}
+Plug 'thoughtbot/vim-rspec', {'for': 'ruby'}
+Plug 'parkr/vim-jekyll', {'for': 'ruby'}
+"Plug 'danchoi/ri.vim', {'for': 'ruby'}

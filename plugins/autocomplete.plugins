@@ -1,0 +1,4 @@
+Plug 'scrooloose/syntastic', { 'on': 'SyntasticCheck'}
+Plug 'Raimondi/delimitMate'
+Plug 'SirVer/ultisnips'
+Plug 'ervandew/supertab'
