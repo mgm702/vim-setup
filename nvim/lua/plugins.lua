@@ -14,18 +14,93 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- Syntax highlighting
   { "nvim-treesitter/nvim-treesitter", config = function() require("config.treesitter") end },
-
   -- File explorer
   { "nvim-tree/nvim-tree.lua", config = function() require("config.nvim-tree") end },
-
   -- Status line
   { "nvim-lualine/lualine.nvim", config = function() require("config.lualine") end },
-
   -- Git integration
   { "lewis6991/gitsigns.nvim", config = function() require("config.gitsigns") end },
 
-  -- Avante.nvim
-  { "yetone/avante.nvim", config = function() require("config.avante") end },
+  -- Avante.nvim with all necessary dependencies
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- Set to false to update to latest code changes
+    opts = {
+      provider = "claude", -- Set default provider
+      -- Provider configurations
+      openai = {
+        endpoint = "https://api.openai.com/v1",
+        model = "gpt-4o",
+        timeout = 30000,
+        temperature = 0,
+        max_tokens = 4096,
+      },
+      claude = {
+        endpoint = "https://api.anthropic.com",
+        model = "claude-3-7-sonnet-20250219",
+        timeout = 30000,
+        temperature = 0,
+        max_tokens = 4096,
+      },
+      grok = {
+        model = "grok-2-1212",
+        temperature = 0,
+        max_tokens = 4096,
+      },
+      file_selector = {
+        -- Set your preferred file selector
+        provider = "telescope", -- Options: "telescope", "mini.pick", "fzf"
+      },
+    },
+    build = "make", -- "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" for Windows
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim", -- Required dependency that was missing
+      "MunifTanjim/nui.nvim",
+
+      -- File selector providers
+      "echasnovski/mini.pick",
+      "nvim-telescope/telescope.nvim",
+      "ibhagwan/fzf-lua",
+
+      -- Other useful integrations
+      "nvim-tree/nvim-web-devicons",
+      "hrsh7th/nvim-cmp", -- Autocompletion for avante commands
+      "zbirenbaum/copilot.lua",
+
+      -- Image support
+      {
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            use_absolute_path = true, -- Required for Windows users
+          },
+        },
+      },
+
+      -- Markdown rendering
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+    config = function()
+      -- This allows config.avante to override the opts above if needed
+      require("config.avante")
+    end,
+  },
 
   -- Commented Vimscript plugins (optional)
   -- { "tpope/vim-fugitive", -- Git integration; use if gitsigns.nvim isn't enough },

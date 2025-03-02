@@ -1,5 +1,21 @@
 require('nvim-treesitter.configs').setup({
-  ensure_installed = { "lua", "vim", "yaml", "go", "ruby", "js", "py" }, -- Add languages as needed
+  ensure_installed = {
+    "lua",
+    "vim",
+    "yaml",
+    "go",
+    "ruby",
+    "json",
+    "python",
+    "c",
+    "html",
+    "php",
+    "sql",
+    "cpp",
+    "bash",
+    "dockerfile",
+    "css",
+  },
   highlight = { enable = true },
   indent = { enable = true },
 })
