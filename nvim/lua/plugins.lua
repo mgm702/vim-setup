@@ -10,7 +10,6 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
-
 require("lazy").setup({
   -- Syntax highlighting
   { "nvim-treesitter/nvim-treesitter", config = function() require("config.treesitter") end },
@@ -20,7 +19,35 @@ require("lazy").setup({
   { "nvim-lualine/lualine.nvim", config = function() require("config.lualine") end },
   -- Git integration
   { "lewis6991/gitsigns.nvim", config = function() require("config.gitsigns") end },
-
+  
+  -- Vim ColorScheme
+  { "EdenEast/nightfox.nvim" },
+  { "folke/tokyonight.nvim" },
+  { 
+    "NTBBloodbath/doom-one.nvim",
+    priority = 1000,
+    config = function()
+      -- Set to light mode before loading the colorscheme
+      vim.g.doom_one_dark_mode = false
+      
+      -- Configure doom-one with global variables
+      vim.g.doom_one_terminal_colors = true
+      vim.g.doom_one_cursor_coloring = true
+      vim.g.doom_one_italic_comments = true
+      vim.g.doom_one_enable_treesitter = true
+      vim.g.doom_one_transparent_background = false
+      vim.g.doom_one_pumblend_enable = true
+      vim.g.doom_one_pumblend_transparency = 20
+      vim.g.doom_one_plugin_neorg = true
+      vim.g.doom_one_plugin_nvim_tree = true
+      vim.g.doom_one_plugin_telescope = true
+      vim.g.doom_one_plugin_gitsigns = true
+      
+      -- Now set the colorscheme
+      vim.cmd("colorscheme doom-one")
+    end
+  },
+  
   -- Avante.nvim with all necessary dependencies
   {
     "yetone/avante.nvim",
@@ -60,17 +87,14 @@ require("lazy").setup({
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim", -- Required dependency that was missing
       "MunifTanjim/nui.nvim",
-
       -- File selector providers
       "echasnovski/mini.pick",
       "nvim-telescope/telescope.nvim",
       "ibhagwan/fzf-lua",
-
       -- Other useful integrations
       "nvim-tree/nvim-web-devicons",
       "hrsh7th/nvim-cmp", -- Autocompletion for avante commands
       "zbirenbaum/copilot.lua",
-
       -- Image support
       {
         "HakonHarnes/img-clip.nvim",
@@ -86,7 +110,6 @@ require("lazy").setup({
           },
         },
       },
-
       -- Markdown rendering
       {
         'MeanderingProgrammer/render-markdown.nvim',
@@ -101,8 +124,9 @@ require("lazy").setup({
       require("config.avante")
     end,
   },
-
   -- Commented Vimscript plugins (optional)
   -- { "tpope/vim-fugitive", -- Git integration; use if gitsigns.nvim isn't enough },
   -- { "tomasiser/vim-code-dark", -- Codedark theme, already loaded via vim.cmd },
 })
+
+vim.opt.termguicolors = true
