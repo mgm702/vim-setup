@@ -70,5 +70,11 @@ vim.opt.errorbells = false
 -- No visual bell
 vim.opt.visualbell = false
 
+-- Match HTML Tags
+vim.g.loaded_matchit = 1
+
 -- Load keymaps
 pcall(require, 'keymaps')
+
+-- Set colorscheme
+vim.cmd("colorscheme doom-one")
