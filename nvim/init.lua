@@ -1,80 +1,24 @@
+-- nvim/init.lua
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
 -- Set leader key (must be set before any mappings that use it)
 vim.g.mapleader = ","
 
--- Load plugins
-require('plugins')
-
--- ================ Basic Settings ==================
--- Show line numbers
-vim.opt.number = true
--- Show relative line numbers
-vim.opt.relativenumber = true
--- Number of spaces a tab counts for
-vim.opt.tabstop = 2
--- Size of indent
-vim.opt.shiftwidth = 2
--- Use spaces instead of tabs
-vim.opt.expandtab = true
--- Don't wrap lines
-vim.opt.wrap = false
--- Enable mouse in all modes
-vim.opt.mouse = 'a'
--- Change directory to the current file
-vim.opt.autochdir = true
--- Command history
-vim.opt.history = 700
--- Show current mode
-vim.opt.showmode = true
--- Show what commands you're typing
-vim.opt.showcmd = true
--- Always show status line
-vim.opt.laststatus = 2
--- Allow modelines
-vim.opt.modeline = true
--- Show cursor position
-vim.opt.ruler = true
--- Show file title in terminal tab
-vim.opt.title = true
--- Command line height
-vim.opt.cmdheight = 2
--- Command-line completion
-vim.opt.wildmenu = true
--- Allow backspace in insert mode
-vim.opt.backspace = 'indent,eol,start'
--- Minimal lines to keep above/below cursor
-vim.opt.scrolloff = 3
--- Minimal columns to keep left/right of cursor
-vim.opt.sidescrolloff = 5
--- Scroll sideways a character at a time
-vim.opt.sidescroll = 1
-
--- ================ Search Settings ==================
--- Highlight search results
-vim.opt.hlsearch = true
--- Incremental search
-vim.opt.incsearch = true
--- Case insensitive search
-vim.opt.ignorecase = true
--- Case sensitive when uppercase present
-vim.opt.smartcase = true
--- Show matching brackets
-vim.opt.showmatch = true
-
--- ================ Clipboard Settings ==================
--- Use system clipboard
-vim.opt.clipboard = 'unnamedplus'
-
--- ================ Error Settings ==================
--- No sounds on error
-vim.opt.errorbells = false
--- No visual bell
-vim.opt.visualbell = false
-
--- Match HTML Tags
-vim.g.loaded_matchit = 1
-
--- Load keymaps
-pcall(require, 'keymaps')
+-- Load custom configs
+require("settings")
+require("keymaps")
+require("lazy").setup("plugins")
 
 -- Set colorscheme
 vim.cmd("colorscheme doom-one")
