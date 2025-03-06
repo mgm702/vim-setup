@@ -1,6 +1,7 @@
 -- nvim/lua/plugins/core.lua
 return {
   { "tpope/vim-fugitive" }, -- Git integration
+  { "sindrets/diffview.nvim", dependencies = { "nvim-lua/plenary.nvim" } }, -- Better diff UI
   { "mattn/emmet-vim" },    -- Emmet for HTML/CSS
   { "mattn/webapi-vim" },   -- Dependency for gist-vim
   { "mattn/gist-vim" },     -- Gist posting
