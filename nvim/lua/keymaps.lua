@@ -1,7 +1,9 @@
 -- ================ Key Mappings ==================
 
 -- Existing mappings (example)
-vim.keymap.set('n', '<C-t>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>vs', ':vsplit<CR>', { noremap = true, silent = true, desc = "Vertical split" })
+vim.keymap.set('n', '<leader>sp', ':split<CR>', { noremap = true, silent = true, desc = "Horizontal split" })
 
 -- Map kj to Escape in insert mode
 vim.keymap.set('i', 'kj', '<Esc>', { noremap = true, silent = true })
