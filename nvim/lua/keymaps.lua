@@ -38,3 +38,24 @@ vim.keymap.set("v", "<leader>aa", "<cmd>Avante<cr>", { desc = "Open Avante with 
 vim.keymap.set("n", "<leader>ac", "<cmd>AvanteSwitch claude<cr>", { desc = "Switch to Claude" })
 vim.keymap.set("n", "<leader>ao", "<cmd>AvanteSwitch openai<cr>", { desc = "Switch to OpenAI" })
 vim.keymap.set("n", "<leader>ag", "<cmd>AvanteSwitch grok<cr>", { desc = "Switch to Grok" })
+
+-- Tab Related - key mappings
+
+-- Make :q close the current tab instead of quitting
+vim.cmd('cnoreabbrev q bd')
+
+-- :Tc {number} to close specific tab number
+vim.api.nvim_create_user_command('Tc', function(opts)
+  vim.cmd('tabclose ' .. opts.args)
+end, { nargs = 1 })
+
+-- :Tex to open a new tab
+vim.api.nvim_create_user_command('Tex', function()
+  vim.cmd('tabnew')
+end, { nargs = 0 })
+
+-- ex in normal mode to perform :Exp
+vim.keymap.set('n', 'ex', ':Exp<CR>', { noremap = true, silent = true })
+
+-- tex in normal mode to perform :Tex
+vim.keymap.set('n', 'tex', ':Tex<CR>', { noremap = true, silent = true })
