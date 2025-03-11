@@ -59,3 +59,29 @@ vim.keymap.set('n', 'ex', ':Exp<CR>', { noremap = true, silent = true })
 
 -- tex in normal mode to perform :Tex
 vim.keymap.set('n', 'tex', ':Tex<CR>', { noremap = true, silent = true })
+
+-- Split Related - key mappings
+
+-- :Vsplit to vertically split with the file loaded or provided
+vim.api.nvim_create_user_command('Vsplit', function(opts)
+  if opts.args ~= "" then
+    vim.cmd('vsplit ' .. opts.args)
+  else
+    vim.cmd('vsplit')
+  end
+end, { nargs = '?', complete = 'file' })
+
+-- :Split to horizontally split with the file loaded or provided
+vim.api.nvim_create_user_command('Split', function(opts)
+  if opts.args ~= "" then
+    vim.cmd('split ' .. opts.args)
+  else
+    vim.cmd('split')
+  end
+end, { nargs = '?', complete = 'file' })
+
+-- sp in normal mode to perform :Split
+vim.keymap.set('n', 'sp', ':Split<CR>', { noremap = true, silent = true })
+
+-- vs in normal mode to perform :Vsplit
+vim.keymap.set('n', 'vs', ':Vsplit<CR>', { noremap = true, silent = true })
