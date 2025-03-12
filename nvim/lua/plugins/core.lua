@@ -8,7 +8,6 @@ return {
   { "romgrk/barbar.nvim" }, -- Tabline/bufferline
   { "nvim-lualine/lualine.nvim", config = function() require("config.lualine") end }, --StatusLine
   { "akinsho/toggleterm.nvim", config = function() require("toggleterm").setup() end }, -- Terminal toggle
-  { "sindrets/diffview.nvim", dependencies = { "nvim-lua/plenary.nvim" } }, -- Better diff UI
   { "EdenEast/nightfox.nvim" }, -- Colorscheme option
   { "folke/tokyonight.nvim" },  -- Colorscheme option
   {
