@@ -13,18 +13,15 @@ vim.keymap.set('n', '<leader><space>', ':nohlsearch<CR>', { noremap = true, sile
 vim.keymap.set('n', '<tab>', '%', { noremap = true })
 vim.keymap.set('v', '<tab>', '%', { noremap = true })
 
--- Filetype-specific settings
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "yaml",
-  callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.expandtab = true
-  end,
-
-})
+-- Avante.vim - key mappings
+vim.keymap.set("n", "<leader>aa", "<cmd>Avante<cr>", { desc = "Open Avante" })
+vim.keymap.set("v", "<leader>aa", "<cmd>Avante<cr>", { desc = "Open Avante with selection" })
+vim.keymap.set("n", "<leader>ac", "<cmd>AvanteSwitchProvider claude<cr>", { desc = "Switch to Claude" })
+vim.keymap.set("n", "<leader>ao", "<cmd>AvanteSwitchProvider openai<cr>", { desc = "Switch to OpenAI" })
+-- vim.keymap.set("n", "<leader>ag", "<cmd>AvanteSwitchProvider grok<cr>", { desc = "Switch to Grok" })
 
 -- BarBar.nvim - buffer/tab related key mappings
+--
 -- When in a split, close only the buffer, not the window
 vim.api.nvim_create_user_command('CloseBuffer', function()
   -- Check if we're in the last window

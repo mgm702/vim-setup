@@ -12,7 +12,6 @@ return {
           path_display = { "truncate" },
           mappings = {
             i = {
-              -- Add common navigation keys for all telescope pickers
               ["<C-n>"] = require("telescope.actions").move_selection_next,
               ["<C-p>"] = require("telescope.actions").move_selection_previous,
               ["<C-c>"] = require("telescope.actions").close,
@@ -35,49 +34,32 @@ return {
             hijack_netrw = true,
             prompt_path = true,
             path_display = { "absolute" },
-            mappings = {
-              ["i"] = {
-                -- Add custom mappings for insert mode for file_browser
-                [".."] = function(prompt_bufnr)
-                  local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-                  local finder = current_picker.finder
-                  
-                  -- Get the parent directory
-                  local parent_dir = vim.fn.fnamemodify(finder.path, ":h")
-                  
-                  -- Change to parent directory
-                  finder.path = parent_dir
-                  current_picker:refresh(finder, { reset_prompt = true })
-                end,
-                ["<C-h>"] = function(prompt_bufnr)
-                  local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-                  local finder = current_picker.finder
-                  
-                  -- Get the parent directory
-                  local parent_dir = vim.fn.fnamemodify(finder.path, ":h")
-                  
-                  -- Change to parent directory
-                  finder.path = parent_dir
-                  current_picker:refresh(finder, { reset_prompt = true })
-                end,
-              },
-            },
           },
         },
       })
-      
-      -- Load the file_browser extension
+
       require("telescope").load_extension("file_browser")
-      
-      -- Define keymappings for telescope functionalities
+
+      -- Find files in the current buffer's directory first
+      vim.keymap.set('n', '<leader>ff', function()
+        require('telescope.builtin').find_files({
+          search_dirs = {vim.fn.expand("%:p:h")}
+        })
+      end, { noremap = true, silent = true, desc = "Find Files in Current Buffer Directory" })
+
+      -- Live grep in the current buffer first
+      vim.keymap.set('n', '<leader>fg', function()
+        require('telescope.builtin').live_grep({
+          search_dirs = {vim.fn.expand("%:p")}
+        })
+      end, { noremap = true, silent = true, desc = "Live Grep in Current Buffer" })
+
       -- Standard telescope functions
-      vim.keymap.set('n', '<leader>ff', function() require('telescope.builtin').find_files() end, { noremap = true, silent = true, desc = "Find Files" })
-      vim.keymap.set('n', '<leader>fg', function() require('telescope.builtin').live_grep() end, { noremap = true, silent = true, desc = "Live Grep" })
       vim.keymap.set('n', '<leader>fB', function() require('telescope.builtin').buffers() end, { noremap = true, silent = true, desc = "Buffers" })
       vim.keymap.set('n', '<leader>fh', function() require('telescope.builtin').help_tags() end, { noremap = true, silent = true, desc = "Help Tags" })
       vim.keymap.set('n', '<leader>fs', function() require('telescope.builtin').grep_string() end, { noremap = true, silent = true, desc = "Grep String" })
       vim.keymap.set('n', '<leader>fr', function() require('telescope.builtin').resume() end, { noremap = true, silent = true, desc = "Resume Last Search" })
-      
+
       -- File browser with <leader>fb
       vim.keymap.set("n", "<leader>fb", function()
         require("telescope").extensions.file_browser.file_browser({
@@ -87,7 +69,7 @@ return {
           hidden = true,
         })
       end, { noremap = true, desc = "File Browser" })
-      
+
       -- Find files starting from the git root
       vim.keymap.set("n", "<leader>fp", function()
         local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]

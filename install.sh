@@ -6,7 +6,7 @@ BASE_DIR=$(pwd)
 # --- Vim Setup ---
 echo "Setting up Vim configuration..."
 # Symlink vimrc to ~/.vimrc
-ln -sf "$BASE_DIR/vimrc" ~/.vimrc
+ln -sf "$BASE_DIR/vim/vimrc" ~/.vimrc
 # Symlink vim directory to ~/.vim
 ln -sf "$BASE_DIR/vim" ~/.vim
 
