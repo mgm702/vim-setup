@@ -17,3 +17,4 @@
 -- tmux.nvim
 -- vim-bundler
 -- rails.vim
+-- nvim-lint (rubocop, go-linter, python, and js) 
