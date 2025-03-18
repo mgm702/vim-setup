@@ -2,14 +2,6 @@
 return function()
   local lint = require("lint")
 
-  -- Map .jsx files to the javascriptreact filetype
-  -- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  --   pattern = "*.jsx",
-  --   callback = function()
-  --     vim.bo.filetype = "javascriptreact" -- Set filetype to javascriptreact for JSX
-  --   end,
-  -- })
-
   -- Configure linters for specific filetypes
   lint.linters_by_ft = {
     ruby = { "rubocop" },      -- Use RuboCop for Ruby files
@@ -21,10 +13,12 @@ return function()
     typescriptreact = { "eslint_d" },
   }
 
-  -- Set up autocommand to run linters on specific events
-  -- vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
-  --   callback = function()
-  --     require("lint").try_lint() -- Run the linter for the current filetype
-  --   end,
-  -- })
+  local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+  vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+    group = lint_augroup,
+    callback = function()
+      lint.try_lint()
+    end,
+  })
 end
