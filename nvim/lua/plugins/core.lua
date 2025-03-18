@@ -2,9 +2,6 @@
 return {
   { "tpope/vim-fugitive" }, -- Git integration
   { "sindrets/diffview.nvim", dependencies = { "nvim-lua/plenary.nvim" } }, -- Better diff UI
-  { "mattn/emmet-vim" },    -- Emmet for HTML/CSS
-  { "mattn/webapi-vim" },   -- Dependency for gist-vim
-  { "mattn/gist-vim" },     -- Gist posting
   { "romgrk/barbar.nvim" }, -- Tabline/bufferline
   { "nvim-lualine/lualine.nvim", config = function() require("config.lualine") end }, --StatusLine
   { "akinsho/toggleterm.nvim", config = function() require("toggleterm").setup() end }, -- Terminal toggle

@@ -1,7 +1,6 @@
--- ================ Key Mappings ==================
+-- nvim/lua/keymaps.lua
 
--- Existing mappings
-vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+-- ================ Key Mappings ==================
 
 -- Map kj to Escape in insert mode
 vim.keymap.set('i', 'kj', '<Esc>', { noremap = true, silent = true })
@@ -13,6 +12,9 @@ vim.keymap.set('n', '<leader><space>', ':nohlsearch<CR>', { noremap = true, sile
 vim.keymap.set('n', '<tab>', '%', { noremap = true })
 vim.keymap.set('v', '<tab>', '%', { noremap = true })
 
+-- Strip all trailing whitespace with <leader>W
+vim.keymap.set('n', '<leader>W', ':%s/\\s\\+$//<CR>:let @/=""<CR>', { noremap = true, silent = true })
+
 -- Avante.vim - key mappings
 vim.keymap.set("n", "<leader>aa", "<cmd>Avante<cr>", { desc = "Open Avante" })
 vim.keymap.set("v", "<leader>aa", "<cmd>Avante<cr>", { desc = "Open Avante with selection" })
@@ -21,21 +23,19 @@ vim.keymap.set("n", "<leader>ao", "<cmd>AvanteSwitchProvider openai<cr>", { desc
 -- vim.keymap.set("n", "<leader>ag", "<cmd>AvanteSwitchProvider grok<cr>", { desc = "Switch to Grok" })
 
 -- BarBar.nvim - buffer/tab related key mappings
---
--- When in a split, close only the buffer, not the window
+
+-- When in a split, close the window entirely, not just the buffer
 vim.api.nvim_create_user_command('CloseBuffer', function()
   -- Check if we're in the last window
   if vim.fn.winnr('$') == 1 then
     vim.cmd('BufferClose')
   else
-    -- Keep the window, just close the buffer
-    vim.cmd('BufferClose')
-    -- Open a new empty buffer in the same window
-    vim.cmd('enew')
+    -- Close the window entirely
+    vim.cmd('close')
   end
 end, {})
 
--- Make :q close the current buffer instead of quitting
+-- Make :q close the current buffer/window instead of quitting
 vim.cmd('cnoreabbrev q CloseBuffer')
 
 -- :Tc {number} to close specific buffer number
@@ -49,7 +49,7 @@ vim.api.nvim_create_user_command('Tex', function()
 end, { nargs = 0 })
 
 -- ex in normal mode to perform :Exp
-vim.keymap.set('n', 'ex', ':Exp<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', 'ex', ':e.<CR>', { noremap = true, silent = true })
 
 -- tex in normal mode to perform :Tex
 vim.keymap.set('n', 'tex', ':Tex<CR>', { noremap = true, silent = true })

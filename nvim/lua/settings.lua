@@ -43,6 +43,14 @@ vim.opt.scrolloff = 3
 vim.opt.sidescrolloff = 5
 -- Scroll sideways a character at a time
 vim.opt.sidescroll = 1
+-- Set listchars for invisible characters
+vim.opt.listchars = {
+  tab = '▸ ',
+  trail = '-',
+  extends = '>',
+  precedes = '<',
+  nbsp = '+'
+}
 
 -- ================ Search Settings ==================
 -- Highlight search results
@@ -68,3 +76,19 @@ vim.opt.visualbell = false
 
 -- Match HTML Tags
 vim.g.loaded_matchit = 1
+
+-- ================ Autocommands ==================
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = "*.rb",
+--   command = ":%s/\\s\\+$//e",
+-- })
+-- 
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   pattern = "*",
+--   command = "silent! lcd %:p:h",
+-- })
+
+vim.api.nvim_create_autocmd("VimResized", {
+  pattern = "*",
+  command = "wincmd =",
+})
