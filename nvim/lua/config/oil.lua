@@ -16,7 +16,22 @@ return function()
       ["-"] = { "actions.parent", mode = "n" },
       ["_"] = { "actions.open_cwd", mode = "n" },
       ["`"] = { "actions.cd", mode = "n" },
-      ["~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+      ["~"] = { "actions.tcd", desc = "Set cwd for current tab" },
+      -- Custom function to create a directory
+      ["+d"] = { 
+        function()
+          local oil = require("oil")
+          local path = oil.get_current_dir()
+          vim.ui.input({ prompt = "Create directory: " .. path }, function(input)
+            if input then
+              local new_dir = path .. input
+              vim.fn.system("mkdir -p " .. vim.fn.shellescape(new_dir))
+              vim.cmd("edit")
+            end
+          end)
+        end,
+        mode = "n" 
+      },
     },
     
     -- File view options
@@ -29,7 +44,7 @@ return function()
         return m ~= nil
       end,
       -- Sort file names with numbers in a more intuitive order for humans
-      natural_order = "fast",
+      natural_order = true,
       -- Sort file and directory names case insensitive
       case_insensitive = false,
       sort = {
@@ -54,10 +69,9 @@ return function()
   -- Set up keymapping to open Oil with '-'
   vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
   
-  -- If you have telescope installed, add this integration
+  -- Telescope Integration
   local telescope_loaded, telescope = pcall(require, "telescope")
   if telescope_loaded then
-    -- Optional: Add custom Telescope picker for oil directories
     local builtin = require("telescope.builtin")
     local oil = require("oil")
     
