@@ -1,34 +1,41 @@
--- nvim/lua/plugins/legacy.lua
 return {
-  { "mattn/emmet-vim" },    -- Emmet for HTML/CSS
-  { "mattn/webapi-vim" },   -- Dependency for gist-vim
-  { "mattn/gist-vim" },     -- Gist posting
+  { "mattn/emmet-vim" },
+  { "mattn/webapi-vim" },
+  { "mattn/gist-vim" },
   {
     "tpope/vim-bundler",
-    lazy = false, -- Load immediately
-    ft = "ruby"   -- Load when Ruby files are opened
+    lazy = false,
+    ft = "ruby"
   },
   {
     "tpope/vim-rails",
-    lazy = false, -- Load immediately
-    ft = "ruby"   -- Load when Ruby files are opened
+    lazy = false,
+    ft = "ruby"
   },
   {
     "mhinz/vim-grepper",
-    lazy = false, -- Load immediately
+    lazy = false,
     config = function()
-      -- Basic configuration
       vim.g.grepper = {
         tools = { "rg", "git", "grep" },
-        searchreg = 1
+        searchreg = 1,
+        quickfix = 1,
       }
 
-      -- Create the mapping for gr to activate Grepper
-      vim.keymap.set("n", "gr", "<cmd>Grepper<cr>", { silent = true, desc = "Search with Grepper" })
+      local function grep_current_dir()
+        local oil = require("oil")
+        local current_dir = oil.get_current_dir()
+        if current_dir then
+          vim.cmd("Grepper -dir " .. vim.fn.fnameescape(current_dir))
+        else
+          vim.cmd("Grepper")
+        end
+      end
 
-      -- Optional: Operator mapping to search for the text under the cursor
-      vim.keymap.set("n", "gs", "<plug>(GrepperOperator)", { desc = "Grepper Operator" })
-      vim.keymap.set("x", "gs", "<plug>(GrepperOperator)", { desc = "Grepper Operator" })
+      vim.keymap.set("n", "gr", grep_current_dir, { silent = true, desc = "Search with Grepper (current dir)" })
+
+      vim.keymap.set("n", "gs", "<plug>(GrepperOperator)", { desc = "Grepper Operator (files)" })
+      vim.keymap.set("x", "gs", "<plug>(GrepperOperator)", { desc = "Grepper Operator (files)" })
     end
   }
 }
