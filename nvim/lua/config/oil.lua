@@ -1,8 +1,9 @@
 return function()
-  require("oil").setup({
+  local oil = require("oil")
+  oil.setup({
     -- Skip confirmation for simple file operations
     skip_confirm_for_simple_edits = true,
-    
+
     -- Keymappings
     keymaps = {
       ["g?"] = { "actions.show_help", mode = "n" },
@@ -18,9 +19,8 @@ return function()
       ["`"] = { "actions.cd", mode = "n" },
       ["~"] = { "actions.tcd", desc = "Set cwd for current tab" },
       -- Custom function to create a directory
-      ["+d"] = { 
+      ["+d"] = {
         function()
-          local oil = require("oil")
           local path = oil.get_current_dir()
           vim.ui.input({ prompt = "Create directory: " .. path }, function(input)
             if input then
@@ -30,10 +30,10 @@ return function()
             end
           end)
         end,
-        mode = "n" 
+        mode = "n"
       },
     },
-    
+
     -- File view options
     view_options = {
       -- Show files and directories that start with "."
@@ -53,10 +53,10 @@ return function()
         { "name", "asc" },
       },
     },
-    
+
     -- Integration with other plugins
     use_default_keymaps = false,
-    
+
     -- Buffer appearance
     columns = {
       "icon",
@@ -65,28 +65,48 @@ return function()
       "mtime",
     },
   })
-  
+
   -- Set up keymapping to open Oil with '-'
   vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-  
+
+  -- Override :e in Oil buffers to open and sync cwd silently
+  vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "oil://*",
+    callback = function()
+      vim.api.nvim_buf_set_keymap(0, "n", "<C-c>e", "<Cmd>lua require('oil').open(require('oil').get_current_dir()); vim.cmd('cd ' .. vim.fn.fnameescape(require('oil').get_current_dir()))<CR>", { silent = true })
+      -- Define a custom command to replace :e
+      vim.api.nvim_buf_create_user_command(0, "E", function()
+        local oil = require("oil")
+        local current_dir = oil.get_current_dir()
+        oil.open(current_dir)
+        vim.cmd("cd " .. vim.fn.fnameescape(current_dir))
+        -- Clear the command-line prompt
+        vim.cmd("redraw!")
+        -- Show a custom message
+        vim.notify("cwd is now: " .. current_dir, vim.log.levels.INFO)
+      end, { nargs = 0 })
+      -- Use silent cabbrev to map :e to :E
+      vim.api.nvim_buf_call(0, function()
+        vim.cmd([[silent! cabbrev <buffer> e E]])
+      end)
+    end,
+  })
+
   -- Telescope Integration
   local telescope_loaded, telescope = pcall(require, "telescope")
   if telescope_loaded then
     local builtin = require("telescope.builtin")
-    local oil = require("oil")
-    
     -- Function to open Oil in the selected directory
     local function open_selected_in_oil(prompt_bufnr)
       local actions = require("telescope.actions")
       local action_state = require("telescope.actions.state")
       local selection = action_state.get_selected_entry()
       actions.close(prompt_bufnr)
-      
       if selection and selection.path then
         oil.open(selection.path)
       end
     end
-    
+
     -- Create Telescope commands that work with Oil
     vim.api.nvim_create_user_command("OilFindDir", function()
       builtin.find_files({
