@@ -11,14 +11,36 @@ return function()
     javascriptreact = { "eslint_d" }, -- Use ESLint for JSX files
     typescript = { "eslint_d" },
     typescriptreact = { "eslint_d" },
+    ["javascript.playwright"] = { "eslint_d" }
   }
 
-  local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+  vim.diagnostic.config({
+    severity_sort = true,
+    severity = {
+      min = vim.diagnostic.severity.WARN,  -- This hides hints and info
+    }
+  })
 
+  local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
     group = lint_augroup,
     callback = function()
-      lint.try_lint()
+      lint.try_lint(nil, {
+        on_list = function(errors)
+          vim.diagnostic.setqflist({ list = errors })
+        end
+      })
     end,
   })
+
+  vim.api.nvim_create_user_command('Lint', function()
+    require('lint').try_lint()
+  end, {})
+
+  -- vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+  --   group = lint_augroup,
+  --   callback = function()
+  --     lint.try_lint()
+  --   end,
+  -- })
 end

@@ -17,6 +17,7 @@ return {
         markdown = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        ruby = { "rubocop" },
       },
       formatters = {
         prettier = {
