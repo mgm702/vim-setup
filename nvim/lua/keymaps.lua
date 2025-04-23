@@ -5,6 +5,9 @@
 -- Map kj to Escape in insert mode
 vim.keymap.set('i', 'kj', '<Esc>', { noremap = true, silent = true })
 
+-- Remap Y to yank the entire line (beginning to end), equivalent to yy
+vim.keymap.set("n", "Y", "yy", { desc = "Yank entire line" })
+
 -- Clear search highlighting with <leader><space>
 vim.keymap.set('n', '<leader><space>', ':nohlsearch<CR>', { noremap = true, silent = true })
 
