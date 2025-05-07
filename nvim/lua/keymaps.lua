@@ -71,3 +71,26 @@ vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
+
+-- Delete without copying to clipboard
+vim.keymap.set('n', 'd', '"_d')
+vim.keymap.set('n', 'x', '"_x')
+vim.keymap.set('v', 'd', '"_d')
+
+-- Command to reload Neovim configs
+vim.keymap.set('n', '<leader>R', function()
+  -- Sync plugins
+  require("lazy").sync({ wait = true })
+
+  -- Reload Lua modules
+  for name, _ in pairs(package.loaded) do
+    if name:match('^plugins') or name:match('^config') then
+      package.loaded[name] = nil
+    end
+  end
+
+  -- Reload configuration
+  dofile(vim.env.MYVIMRC)
+
+  vim.notify("Neovim configuration and plugins reloaded!", vim.log.levels.INFO)
+end)
