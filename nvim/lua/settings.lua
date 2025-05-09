@@ -65,8 +65,8 @@ vim.opt.smartcase = true
 vim.opt.showmatch = true
 
 -- ================ Clipboard Settings ==================
--- Use system clipboard
-vim.opt.clipboard = 'unnamedplus'
+-- Only yank operations affect system clipboard
+vim.opt.clipboard = ""
 
 -- ================ Error Settings ==================
 -- No sounds on error
@@ -77,7 +77,14 @@ vim.opt.visualbell = false
 -- Match HTML Tags
 vim.g.loaded_matchit = 1
 
+-- ========= Files, Backups, and Swap Files ==========
+vim.opt.swapfile = false        -- Makes it so no .swp file is created when working on a project
+vim.opt.writebackup = false
+vim.opt.backup = false
+vim.opt.autoread = true
+
 -- ================ Autocommands ==================
+
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --   pattern = "*.rb",
 --   command = ":%s/\\s\\+$//e",
@@ -91,4 +98,15 @@ vim.g.loaded_matchit = 1
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = "*",
   command = "wincmd =",
+})
+
+-- If Focus is lost on the terminal, autosave
+vim.api.nvim_create_autocmd({"FocusGained", "BufEnter"}, {
+  pattern = "*",
+  command = "silent! !"
+})
+
+vim.api.nvim_create_autocmd({"FocusLost", "WinLeave"}, {
+  pattern = "*",
+  command = "silent! w"
 })

@@ -5,6 +5,9 @@
 -- Map kj to Escape in insert mode
 vim.keymap.set('i', 'kj', '<Esc>', { noremap = true, silent = true })
 
+-- Remap Y to yank the entire line (beginning to end), equivalent to yy
+vim.keymap.set("n", "Y", "yy", { desc = "Yank entire line" })
+
 -- Clear search highlighting with <leader><space>
 vim.keymap.set('n', '<leader><space>', ':nohlsearch<CR>', { noremap = true, silent = true })
 
@@ -68,3 +71,26 @@ vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
+
+-- Map yank operations to system clipboard
+vim.keymap.set('n', 'y', '"+y')
+vim.keymap.set('n', 'Y', '"+y$')
+vim.keymap.set('v', 'y', '"+y')
+
+-- Command to reload Neovim configs
+vim.keymap.set('n', '<leader>R', function()
+  -- Sync plugins
+  require("lazy").sync({ wait = true })
+
+  -- Reload Lua modules
+  for name, _ in pairs(package.loaded) do
+    if name:match('^plugins') or name:match('^config') then
+      package.loaded[name] = nil
+    end
+  end
+
+  -- Reload configuration
+  dofile(vim.env.MYVIMRC)
+
+  vim.notify("Neovim configuration and plugins reloaded!", vim.log.levels.INFO)
+end)
