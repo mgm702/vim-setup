@@ -3,7 +3,6 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local conform = require("conform")
-
 		conform.setup({
 			formatters_by_ft = {
 				-- javascript = { "prettier" },
@@ -28,14 +27,27 @@ return {
 					},
 				},
 				rubocop = {
-					args = { "--server", "--auto-correct-all", "--stderr", "--force-exclusion", "--stdin", "$FILENAME" },
+					args = { "--auto-correct-all", "--stderr", "--force-exclusion", "--stdin", "$FILENAME" },
 				},
 			},
-			format_on_save = {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			},
+			format_on_save = function(bufnr)
+				local ft = vim.bo[bufnr].filetype
+				if ft == "ruby" then
+					return nil -- Don't format Ruby files on save
+				else
+					return {
+						lsp_fallback = true,
+						async = false,
+						timeout_ms = 1000,
+					}
+				end
+			end,
 		})
+
+		-- Manual RuboCop formatting keymap
+		vim.keymap.set("n", "<leader>fr", function()
+			conform.format({ formatters = { "rubocop" } })
+		end, { desc = "Format Ruby file with RuboCop" })
 	end,
 }
+
